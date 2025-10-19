@@ -1,7 +1,7 @@
 package ru.yandex.practicum;
 
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import ru.yandex.practicum.delivery.ParcelBox;
 import ru.yandex.practicum.delivery.model.FragileParcel;
@@ -12,8 +12,8 @@ public class DeliveryCostTest {
 
     private static ParcelBox<StandardParcel> standardParcelParcelBox;
 
-    @BeforeAll
-    public static void beforeAll() {
+    @BeforeEach
+    public void beforeEach() {
         standardParcelParcelBox = new ParcelBox<>(10);
     }
 
@@ -48,6 +48,24 @@ public class DeliveryCostTest {
     }
 
     @Test
+    public void shouldReturnFalseWhenParcelIsNotExpired() {
+        PerishableParcel perishableParcel = new PerishableParcel("суп", 1, "Москва", 1, 1);
+
+        boolean actualResult = perishableParcel.isExpired(1);
+
+        Assertions.assertFalse(actualResult);
+    }
+
+    @Test
+    public void shouldReturnFalseWhenParcelIsNotExpiredWhenSumSendDayAndTimeToLiveEqualsCurrentDay() {
+        PerishableParcel perishableParcel = new PerishableParcel("суп", 1, "Москва", 1, 1);
+
+        boolean actualResult = perishableParcel.isExpired(2);
+
+        Assertions.assertFalse(actualResult);
+    }
+
+    @Test
     public void shouldReturnTrueWhenParcelIsExpired() {
         PerishableParcel perishableParcel = new PerishableParcel("суп", 1, "Москва", 1, 1);
 
@@ -57,17 +75,17 @@ public class DeliveryCostTest {
     }
 
     @Test
-    public void shouldReturnFalseWhenParcelIsNotExpired() {
-        PerishableParcel perishableParcel = new PerishableParcel("суп", 1, "Москва", 1, 1);
+    public void shouldAddParcelWhenWeightIsWithinLimit() {
+        StandardParcel standardParcel = new StandardParcel("игрушка", 9, "Москва", 1);
 
-        boolean actualResult = perishableParcel.isExpired(2);
+        boolean actualResult = standardParcelParcelBox.addParcel(standardParcel);
 
-        Assertions.assertFalse(actualResult);
+        Assertions.assertTrue(actualResult);
     }
 
     @Test
-    public void shouldAddParcelWhenWeightIsWithinLimit() {
-        StandardParcel standardParcel = new StandardParcel("игрушка", 2, "Москва", 1);
+    public void shouldAddParcelWhenWeightEqualsLimit() {
+        StandardParcel standardParcel = new StandardParcel("игрушка", 10, "Москва", 1);
 
         boolean actualResult = standardParcelParcelBox.addParcel(standardParcel);
 

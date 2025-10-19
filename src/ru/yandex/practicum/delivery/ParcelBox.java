@@ -36,14 +36,7 @@ public class ParcelBox<T extends Parcel> {
         return resultWeight;
     }
 
-    public void getAllParcels() {
-        if (parcels.isEmpty()) {
-            System.out.println("Посылок нет");
-        } else {
-            System.out.println("Содержимое коробки:");
-            for (T parcel : parcels) {
-                System.out.println(parcel.getDescription());
-            }
-        }
+    public ArrayList<T> getAllParcels() {
+        return parcels;
     }
 }

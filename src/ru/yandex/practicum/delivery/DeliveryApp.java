@@ -173,16 +173,27 @@ public class DeliveryApp {
 
         switch (type) {
             case 1:
-                standardParcelParcelBox.getAllParcels();
+                showAllParcels(standardParcelParcelBox.getAllParcels());
                 break;
             case 2:
-                perishableParcelBox.getAllParcels();
+                showAllParcels(perishableParcelBox.getAllParcels());
                 break;
             case 3:
-                fragileParcelBox.getAllParcels();
+                showAllParcels(fragileParcelBox.getAllParcels());
                 break;
             default:
                 System.out.println("Неверный тип коробки");
+        }
+    }
+
+    private static void showAllParcels(ArrayList<? extends Parcel> parcels) {
+        if (parcels.isEmpty()) {
+            System.out.println("Посылок нет");
+        } else {
+            System.out.println("Содержимое коробки:");
+            for (Parcel parcel : parcels) {
+                System.out.println(parcel.getDescription());
+            }
         }
     }
 }
